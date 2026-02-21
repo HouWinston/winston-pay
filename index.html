@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Winston API - 付款页</title>
+  <style>
+    :root { color-scheme: light; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      background: #0b0f17;
+      color: #e8eefc;
+    }
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 16px 14px 40px;
+    }
+    h1 { font-size: 18px; margin: 8px 0 14px; font-weight: 700; }
+    .card {
+      background: #111a2b;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      overflow: hidden;
+      margin: 14px 0;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    .card .hd {
+      padding: 12px 14px;
+      font-weight: 700;
+      letter-spacing: .2px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.03);
+    }
+    .card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #fff;
+    }
+    .note {
+      padding: 12px 14px 16px;
+      line-height: 1.55;
+      font-size: 15px;
+    }
+    .note strong { font-weight: 800; }
+    .wx {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.05);
+      border: 1px dashed rgba(255,255,255,.18);
+      word-break: break-all;
+    }
+    .btns { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+    button {
+      appearance: none;
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-weight: 700;
+      cursor: pointer;
+      background: #2b62ff;
+      color: white;
+    }
+    button.secondary { background: rgba(255,255,255,.10); }
+    .tip { opacity: .9; font-size: 13px; margin-top: 8px; }
+    footer { opacity: .7; font-size: 12px; margin-top: 18px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>付款码（长按二维码识别）</h1>
+
+    <div class="card">
+      <div class="hd">微信支付</div>
+      <img src="assets/wechat.jpg" alt="微信收款码" />
+      <div class="note">
+        <strong>🛒 Winston API - $1 引流测试包<br>
+        请长按识别上方二维码，支付 7 元。<br>
+        支付成功后，请务必添加管理员微信：18936098501，并发送付款截图。<br>
+        管理员将立刻为您发放包含 $1 额度的兑换码！</strong>
+
+        <div class="wx">管理员微信：<strong id="wxid">18936098501</strong></div>
+        <div class="btns">
+          <button id="copy">复制微信号</button>
+          <button class="secondary" id="top">回到顶部</button>
+        </div>
+        <div class="tip" id="msg" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="hd">支付宝</div>
+      <img src="assets/alipay.jpg" alt="支付宝收款码" />
+      <div class="note">
+        <strong>🛒 Winston API - $1 引流测试包<br>
+        请长按识别上方二维码，支付 7 元。<br>
+        支付成功后，请务必添加管理员微信：18936098501，并发送付款截图。<br>
+        管理员将立刻为您发放包含 $1 额度的兑换码！</strong>
+      </div>
+    </div>
+
+    <footer>如页面未显示图片，请确认图片路径为 assets/wechat.jpg 与 assets/alipay.jpg（区分大小写）。</footer>
+  </div>
+
+  <script>
+    const wx = document.getElementById('wxid').textContent.trim();
+    const msg = document.getElementById('msg');
+    document.getElementById('copy').addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(wx);
+        msg.textContent = '已复制：' + wx;
+      } catch (e) {
+        msg.textContent = '复制失败，请手动复制：' + wx;
+      }
+    });
+    document.getElementById('top').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  </script>
+</body>
+</html>
