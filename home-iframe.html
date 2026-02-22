@@ -1,0 +1,343 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Winston AI Gateway - Home</title>
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-main: #e5e7eb;
+            --text-muted: #9ca3af;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.15), transparent 25%);
+        }
+
+        /* 动态网格背景 */
+        .grid-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            z-index: -1;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(40px); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        /* 左侧主视觉区 */
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            animation: fadeIn 1s ease-out 0.2s both;
+        }
+
+        /* 玻璃拟物卡片 */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+            transform: skewX(-20deg);
+            animation: shine 6s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* 核心优势流式布局 */
+        .features-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            animation: fadeIn 1s ease-out 0.4s both;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .feature-item:nth-child(2) { border-left-color: var(--accent-purple); }
+        .feature-item:nth-child(3) { border-left-color: var(--accent-green); }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem;
+            border-radius: 8px;
+        }
+
+        /* 右侧极客终端区 */
+        .terminal-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            animation: slideInRight 1s ease-out 0.6s both;
+        }
+
+        .terminal-window {
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+        }
+
+        .terminal-header {
+            background: #111;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .terminal-dot {
+            width: 12px; height: 12px; border-radius: 50%;
+        }
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        .terminal-body {
+            padding: 1.5rem;
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: #a5b4fc;
+            line-height: 1.5;
+        }
+
+        .code-comment { color: #6b7280; }
+        .code-keyword { color: #f472b6; }
+        .code-string { color: #34d399; }
+        .code-function { color: #60a5fa; }
+
+        /* 动态打字效果 */
+        .typing-effect {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid #a5b4fc;
+            animation: typing 3s steps(40, end), blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #a5b4fc; } }
+
+        /* 状态监控面板 */
+        .status-panel {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        .status-label { color: var(--text-muted); }
+        .status-value { color: var(--accent-green); font-weight: bold; }
+        .status-value.pulse { animation: pulse 2s infinite; }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* 响应式 */
+        @media (max-width: 968px) {
+            .container { grid-template-columns: 1fr; }
+            .hero-title { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    
+    <div class="container">
+        <!-- 左侧：核心价值与视觉展示 -->
+        <div class="hero-section">
+            <div>
+                <h1 class="hero-title">Winston AI Gateway</h1>
+                <p class="hero-subtitle">企业级高可用 AI 聚合中台。不缓存、不篡改、不偷换概念，直连全球顶尖算力。</p>
+            </div>
+
+            <div class="glass-card">
+                <h2 style="margin-bottom: 1rem; font-size: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="font-size: 1.2rem;"></span> 绝对透明的「跑腿费」模式
+                </h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+                    您的充值按 <strong style="color: #fff;">￥7.0 = .00</strong> 结算。对比官方约 ￥6.9 的成本，我们仅赚取 <strong style="color: var(--accent-green);">￥0.1</strong> 的微小汇差。全额用于补贴跨境专线与支付通道费。
+                </p>
+                
+                <div class="features-flow">
+                    <div class="feature-item">
+                        <div class="feature-icon"></div>
+                        <div>
+                            <h3 style="font-size: 1.1rem;">100% 纯净算力</h3>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">拒绝偷 Token，拒绝虚高溢价，每一笔消耗与官方账单严格对齐。</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"></div>
+                        <div>
+                            <h3 style="font-size: 1.1rem;">极速免墙直连</h3>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">底层采用企业级专线中转，彻底解决 API 经常超时、断连的痛点。</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"></div>
+                        <div>
+                            <h3 style="font-size: 1.1rem;">Zero-Log 隐私保护</h3>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">无状态代理架构，对话数据内存流转即焚，绝不落盘。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧：极客终端与代码演示 -->
+        <div class="terminal-section">
+            <!-- 终端代码框 -->
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <div class="terminal-dot dot-red"></div>
+                    <div class="terminal-dot dot-yellow"></div>
+                    <div class="terminal-dot dot-green"></div>
+                    <span style="margin-left: 10px; color: #666; font-family: monospace; font-size: 0.8rem;">quick_start.py</span>
+                </div>
+                <div class="terminal-body">
+                    <span class="code-comment"># 1. Install OpenAI SDK</span><br>
+                    <span class="code-comment"># pip install openai</span><br><br>
+                    <span class="code-keyword">import</span> openai<br><br>
+                    client = openai.<span class="code-function">OpenAI</span>(<br>
+                    &nbsp;&nbsp;api_key=<span class="code-string">"sk-winston..."</span>,<br>
+                    &nbsp;&nbsp;base_url=<span class="code-string">"https://winstonhou.app/v1"</span><br>
+                    )<br><br>
+                    <span class="code-comment"># 2. Call the API</span><br>
+                    response = client.chat.completions.<span class="code-function">create</span>(<br>
+                    &nbsp;&nbsp;model=<span class="code-string">"gpt-4-turbo"</span>,<br>
+                    &nbsp;&nbsp;messages=[{"role": "user", "content": "Hi!"}]<br>
+                    )<br><br>
+                    <div class="typing-effect">> Connection established... 200 OK</div>
+                </div>
+            </div>
+
+            <!-- 实时状态监控面板 -->
+            <div class="status-panel">
+                <h3 style="font-size: 1rem; margin-bottom: 1rem; border-bottom: 1px solid #333; padding-bottom: 0.5rem;">[ SYSTEM CORE ]</h3>
+                <div class="status-row">
+                    <span class="status-label">Gateway Status</span>
+                    <span class="status-value pulse">ONLINE</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-label">Avg Latency</span>
+                    <span class="status-value" style="color: var(--accent-blue);">42ms</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-label">Encryption</span>
+                    <span class="status-value" style="color: var(--accent-purple);">TLS 1.3</span>
+                </div>
+                <div class="status-row">
+                    <span class="status-label">Active Models</span>
+                    <span class="status-value">100+</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
